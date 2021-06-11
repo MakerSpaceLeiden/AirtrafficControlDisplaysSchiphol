@@ -4,9 +4,11 @@
 #include <avr/sleep.h>
 #include <util/delay.h>
 
-#include "schiphol50228.h"	
 #include "iocompat.h"	
-#include "pins.h"
+#include "pins.h"	
+
+#include "schiphol50228.h"	
+#include "pd44.h"	
 
 void init50228(void) {
 	OUTPUT(MPLEX_A);
@@ -20,7 +22,19 @@ void select50228(unsigned char c) {
 	SET(MPLEX_B,(c>>1)&1);
 	SET(MPLEX_C,(c>>2)&1);
 #else
-	// Visible glitches - hardcode for now
+	// For now - until we understand what causes the glitches every 20-30 seconds.
+	// As we can see above as a 0.2-0.4 uSecond spike.
 	PORTC = (PORTC & ~((1<<3) + (1<<4) + (1<<5))) | ((c & 0x7) << 3);
 #endif
 };
+
+void setDisplay(int display, char * str) {
+	select50228(display);
+	
+        for(int i = 0; i < 4; i++) {
+		char c = *str;
+		if (c) str++;
+		if (!c) c = ' ';
+		pd44_sendChar(3-i,c);
+	};
+}

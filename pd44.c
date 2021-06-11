@@ -7,7 +7,7 @@
 #include "iocompat.h"	
 #include "pins.h"
 
-static void _sendByte(unsigned char addr, unsigned char val) {
+void _sendByte(unsigned char addr, unsigned char val) {
 	HIGH(PD44_CE1);
 	HIGH(PD44_RD);
 	HIGH(PD44_WR);
@@ -49,8 +49,12 @@ void pd44_init(void) {
 	HIGH(PD44_RST);
 }
 
-void pd44_sendByte(unsigned char addr, unsigned char val) {
+void inline pd44_sendByte(unsigned char addr, unsigned char val) {
 	_sendByte(addr | 4, val);
+}
+
+void inline pd44_sendCtrl(unsigned char val) {
+	_sendByte(0, val);
 }
 
 void pd44_sendChar(unsigned char addr, char c) {
@@ -59,10 +63,6 @@ void pd44_sendChar(unsigned char addr, char c) {
                 c = 0x7F;
 
 	_sendByte(addr | 4, c);
-}
-
-void pd44_sendCtrl(unsigned char val) {
-	_sendByte(0, val);
 }
 
 void pd44_reset(void) {

@@ -3,7 +3,7 @@ SRC            = display.c pd44.c schiphol50228.c
 OBJS           = display.o pd44.o schiphol50228.o
 
 MCU_TARGET     = atmega161
-OPTIMIZE       = -O2
+OPTIMIZE       = -O3
 
 AVRDUDE        = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude
 AVRDUDECONF    = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf
@@ -29,18 +29,17 @@ flash: $(PRG).hex
 	$(AVRDUDE) -C $(AVRDUDECONF) -c avrispmkII -p m161 -U flash:w:$<:i
 
 .c.o:
+	${CC} ${CFLAGS} -c $< -S
 	${CC} ${CFLAGS} -c $<
 
 $(PRG).elf: $(OBJS)
-	echo $(SRC)
-	echo $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 # dependency:
 $(PRG).o: $(SRC) *.h
 
 clean:
-	rm -rf *.o $(PRG).elf *.eps *.png *.pdf *.bak 
+	rm -rf *.o $(PRG).elf  *.bak *.s
 	rm -rf *.lst *.map $(EXTRA_CLEAN_FILES)
 
 lst:  $(PRG).lst
@@ -84,25 +83,4 @@ esrec: $(PRG)_eeprom.srec
 %_eeprom.bin: %.elf
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O binary $< $@ \
 	|| { echo empty $@ not generated; exit 0; }
-
-# Every thing below here is used by avr-libc's build system and can be ignored
-# by the casual user.
-
-FIG2DEV                 = fig2dev
-EXTRA_CLEAN_FILES       = *.hex *.bin *.srec
-
-dox: eps png pdf
-
-eps: $(PRG).eps
-png: $(PRG).png
-pdf: $(PRG).pdf
-
-%.eps: %.fig
-	$(FIG2DEV) -L eps $< $@
-
-%.pdf: %.fig
-	$(FIG2DEV) -L pdf $< $@
-
-%.png: %.fig
-	$(FIG2DEV) -L png $< $@
 
