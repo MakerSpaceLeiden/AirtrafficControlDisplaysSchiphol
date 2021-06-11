@@ -32,6 +32,12 @@ void UART_send(char * str) {
      for(char *p = str; *p; p++) UART_send_char(*p);
 }
 
+int UART_get(void) {
+	if (UCSR0A & (1<<7))
+		return UDR0;
+	return -1;
+};
+
 int main (void)
 {
     UART_init();
@@ -53,28 +59,35 @@ int main (void)
         select50228(displ);
         pd44_brigthness(3);
 	setDisplay(displ, str);
-#if 0
-         pd44_lamptest();
-	 _delay_ms(500);
-         pd44_cls();
-	 pd44_sendChar(0, '0' + displ);
-#endif
     } 
     _delay_ms(2000);
 
-    char str[] = "Marswier                     nog                           twee                             daagdisples                     !                           ";
+    char str[] = "All your bases are belong to us         ";
+    int at = 0;
 
-    for (int i = 0; ; i++) {
-      for(int displ = 0; displ < 6; displ++) {
+    for (int i = 0; i < 50 ; i++) {
+       for(int displ = 0; displ < 6; displ++) {
         select50228(displ);
 	pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
 	pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
 	pd44_sendChar(1, str[ ( displ*4 + i + 2 ) % (sizeof(str)-1) ]);
 	pd44_sendChar(0, str[ ( displ*4 + i + 3 ) % (sizeof(str)-1) ]);
+        };
+        _delay_ms(100); // sleep_mode();
       };
-      _delay_ms(100); // sleep_mode();
-      UART_send("Tock\n");
+    
+    UART_send("Ready for input\n"); 
+    for(;;) { 
+      int c = UART_get();
+      if (c>0 && at < sizeof(str) -1) {
+		if (c == 10) {
+			at = 0;
+		} else if (c >= ' ') {
+			str[at++] = c;
+			str[at] = 0;
+		};
+		setFullDisplay(str);
+	};
     }
-
     return (0);
 }

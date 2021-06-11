@@ -50,4 +50,7 @@
 #define MPLEX_B      C,4 // C,4
 #define MPLEX_C      C,5 // C,5
 
+// Push buttons front
+#define BUTT_UP	     D,2
+#define BUTT_DOWN    D,3
 #endif

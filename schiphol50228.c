@@ -38,3 +38,11 @@ void setDisplay(int display, char * str) {
 		pd44_sendChar(3-i,c);
 	};
 }
+
+void setFullDisplay(char * str) {
+	int len = 0;
+	for(char * p = str; *p; len++, p++) {};
+
+	for(int d = 0; d < 6 && d*4 < len; d++) 
+		setDisplay(d, str + d * 4);
+}
