@@ -38,16 +38,15 @@ int main (void)
 #endif
     } 
 
-    char str[] = "Hello MSL       ";
+    char str[] = "Hello MSL !                              How are we today ?                   ....";
 
     for (int i = 0; ; i++) {
       for(int j = 0; j < 6; j++) {
         select50228(j);
-	str[10] = j + '0';
-	pd44_sendChar(3, str[ ( i + 0 ) % (sizeof(str)-1) ]);
-	pd44_sendChar(2, str[ ( i + 1 ) % (sizeof(str)-1) ]);
-	pd44_sendChar(1, str[ ( i + 2 ) % (sizeof(str)-1) ]);
-	pd44_sendChar(0, str[ ( i + 3 ) % (sizeof(str)-1) ]);
+	pd44_sendChar(3, str[ ( j*4 + i + 0 ) % (sizeof(str)-1) ]);
+	pd44_sendChar(2, str[ ( j*4 + i + 1 ) % (sizeof(str)-1) ]);
+	pd44_sendChar(1, str[ ( j*4 + i + 2 ) % (sizeof(str)-1) ]);
+	pd44_sendChar(0, str[ ( j*4 + i + 3 ) % (sizeof(str)-1) ]);
       };
       _delay_ms(150); // sleep_mode();
     }

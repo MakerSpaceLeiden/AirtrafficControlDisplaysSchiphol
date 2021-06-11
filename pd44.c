@@ -55,15 +55,7 @@ void pd44_sendByte(unsigned char addr, unsigned char val) {
 
 void pd44_sendChar(unsigned char addr, char c) {
 
-	if (c >= '0' && c <='9') 
-		c = 0x30 + c - '0';
-	else if (c >= '@' && c <='Z') 
-		c = 0x40 + c - '@';
-	else if (c >= 'a' && c <='z') 
-		c = 0x61 + c - 'a';
-        else if (c == ' ')
-		c = 0x20;
-        else
+	if (c < ' ' ||  c > 0x7E)
                 c = 0x7F;
 
 	_sendByte(addr | 4, c);
