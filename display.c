@@ -27,16 +27,21 @@ int main (void)
     init50228();
     pd44_init();
 
-    for(int j = 0; j < 8; j++) {
+    for(int j = 0; j < 6; j++) {
          select50228(j);
-         pd44_reset();
          pd44_brigthness(3);
+#if 0
+         pd44_lamptest();
+	 _delay_ms(500);
+         pd44_cls();
+	 pd44_sendChar(0, '0' + j);
+#endif
     } 
-	
+
     char str[] = "Hello MSL       ";
 
     for (int i = 0; ; i++) {
-      for(int j = 0; j < 8; j++) {
+      for(int j = 0; j < 6; j++) {
         select50228(j);
 	str[10] = j + '0';
 	pd44_sendChar(3, str[ ( i + 0 ) % (sizeof(str)-1) ]);
@@ -44,8 +49,7 @@ int main (void)
 	pd44_sendChar(1, str[ ( i + 2 ) % (sizeof(str)-1) ]);
 	pd44_sendChar(0, str[ ( i + 3 ) % (sizeof(str)-1) ]);
       };
-	_delay_ms(1500); 
-//        sleep_mode();
+      _delay_ms(150); // sleep_mode();
     }
 
     return (0);

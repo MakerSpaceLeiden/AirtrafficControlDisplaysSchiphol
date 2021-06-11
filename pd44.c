@@ -16,13 +16,10 @@ static void _sendByte(unsigned char addr, unsigned char val) {
 	SET(PD44_A1, ((addr >> 1) & 1));
 	SET(PD44_A2, ((addr >> 2) & 1));
 
-
         PD44_DATA = val;
 
 	LOW(PD44_WR);
-	_delay_ms(1);
 	HIGH(PD44_WR);
-	_delay_ms(1);
 
 	LOW(PD44_RD);
 	LOW(PD44_CE1);
@@ -49,6 +46,7 @@ void pd44_init(void) {
 	OUTPUT(PD44_D7);
 
 	OUTPUT(PD44_RST);
+	HIGH(PD44_RST);
 }
 
 void pd44_sendByte(unsigned char addr, unsigned char val) {
@@ -71,8 +69,8 @@ void pd44_sendChar(unsigned char addr, char c) {
 	_sendByte(addr | 4, c);
 }
 
-void pd44_sendCtrl(unsigned char addr, unsigned char val) {
-	pd44_sendByte(addr & ~4, val);
+void pd44_sendCtrl(unsigned char val) {
+	_sendByte(0, val);
 }
 
 void pd44_reset(void) {
@@ -81,13 +79,13 @@ void pd44_reset(void) {
 }
 
 void pd44_cls(void) {
-	pd44_sendCtrl(0, 0x80);
+	pd44_sendCtrl(0x80);
 }
 
 void pd44_brigthness(unsigned char val) {
-	pd44_sendCtrl(0 & ~4, val & 0x7);
+	pd44_sendCtrl(val & 0x3);
 }
 
-void pd44_lamptest(unsigned char val) {
-	pd44_sendCtrl(0 & ~4, val & 0x40);
+void pd44_lamptest() {
+	pd44_sendCtrl(1<<6);
 }

@@ -12,13 +12,15 @@ void init50228(void) {
 	OUTPUT(MPLEX_A);
 	OUTPUT(MPLEX_B);
 	OUTPUT(MPLEX_C);
-
-	select50228(0);
 }
 
 void select50228(unsigned char c) {
+#if 0
 	SET(MPLEX_A,(c>>0)&1);
 	SET(MPLEX_B,(c>>1)&1);
 	SET(MPLEX_C,(c>>2)&1);
+#else
+	// Visible glitches - hardcode for now
+	PORTC = (PORTC & ~((1<<3) + (1<<4) + (1<<5))) | ((c & 0x7) << 3);
+#endif
 };
-
