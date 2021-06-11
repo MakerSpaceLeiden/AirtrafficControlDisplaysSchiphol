@@ -10,5 +10,6 @@ Requirements:
 Hardware docs: https://wiki.makerspaceleiden.nl/mediawiki/index.php/RadarBoardsSchipholControl
 
 Intro on general AVR stuff: https://www.nongnu.org/avr-libc/user-manual/group__demo__project.html
-:wq
+
+See the images for the numbering scheme used in the hardware.
 
