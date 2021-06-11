@@ -46,8 +46,8 @@
 /* Multiplexer address lines (SNx4HC138) -- see PD datasheet for
  * how this is used to break out to (here 6) displays.
  */
-#define MPLEX_A      C,3
-#define MPLEX_B      C,4
-#define MPLEX_C      C,5
+#define MPLEX_A      C,3 // C,3
+#define MPLEX_B      C,4 // C,4
+#define MPLEX_C      C,5 // C,5
 
 #endif

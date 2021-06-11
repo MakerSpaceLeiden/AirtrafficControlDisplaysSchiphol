@@ -16,7 +16,7 @@ void init50228(void) {
 	select50228(0);
 }
 
-void select50228(int c) {
+void select50228(unsigned char c) {
 	SET(MPLEX_A,(c>>0)&1);
 	SET(MPLEX_B,(c>>1)&1);
 	SET(MPLEX_C,(c>>2)&1);

@@ -38,6 +38,7 @@ int main (void)
     for (int i = 0; ; i++) {
       for(int j = 0; j < 8; j++) {
         select50228(j);
+	str[10] = j + '0';
 	pd44_sendChar(3, str[ ( i + 0 ) % (sizeof(str)-1) ]);
 	pd44_sendChar(2, str[ ( i + 1 ) % (sizeof(str)-1) ]);
 	pd44_sendChar(1, str[ ( i + 2 ) % (sizeof(str)-1) ]);
