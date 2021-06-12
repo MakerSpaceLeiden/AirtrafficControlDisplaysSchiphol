@@ -14,6 +14,7 @@ void init50228(void) {
 	OUTPUT(MPLEX_A);
 	OUTPUT(MPLEX_B);
 	OUTPUT(MPLEX_C);
+
 }
 
 void select50228(unsigned char c) {
