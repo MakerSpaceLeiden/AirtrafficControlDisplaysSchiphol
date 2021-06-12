@@ -1,6 +1,6 @@
 PRG            = dsip
-SRC            = display.c ../shared/pd44.c schiphol50228.c
-OBJS           = display.o pd44.o schiphol50228.o
+SRC            = display.c schiphol50228.c
+OBJS           = display.o pd44.o schiphol50228.o serial.o
 
 MCU_TARGET     = atmega161
 OPTIMIZE       = -O3
@@ -29,6 +29,9 @@ flash: $(PRG).hex
 	$(AVRDUDE) -C $(AVRDUDECONF) -c avrispmkII -p m161 -U flash:w:$<:i
 
 pd44.o:  ../shared/pd44.c
+	${CC} ${CFLAGS} -c $<
+
+serial.o:  ../shared/serial.c
 	${CC} ${CFLAGS} -c $<
 
 .c.o:

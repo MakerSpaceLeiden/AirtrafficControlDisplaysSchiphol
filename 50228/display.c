@@ -9,6 +9,7 @@
 #include "iocompat.h"
 
 #include "pins.h"
+#include "serial.h"
 #include "pd44.h"
 #include "schiphol50228.h"
 
@@ -27,30 +28,6 @@ ISR(INT0_vect){
 ISR(INT1_vect){
     d_pressed = 1;
 }
-
-void UART_init() {
-    UCSR0A = 0;
-    UCSR0B = (1 << 4) + (1 << 3); // RX/TX on.
-#define UBR 51 /* 9600 */
-    UBRRH = (UBR >> 8) & 0x0F;
-    UBRR0 = (UBR >> 0) & 0xFF;
-}
-
-void inline UART_send_char(unsigned char c) {
-    /* wait for the register to clear */
-    while ((UCSR0A & (1 << 5)) == 0) {};
-    UDR0 = c;
-}
-
-void UART_send(char *str) {
-    for (char *p = str; *p; p++) UART_send_char(*p);
-}
-
-int UART_get(void) {
-    if (UCSR0A & (1 << 7))
-        return UDR0;
-    return -1;
-};
 
 void BUTTON_init(){
     INPUT(BUTT_UP);
@@ -111,7 +88,7 @@ int main(void) {
     UART_send("Ready for input\n");
     for (;;) {
         int c = UART_get();
-        if (c > 0 && at < sizeof(str) - 1) {
+        if (c != NODATA && at < sizeof(str) - 1) {
             if (c == 10) {
                 at = 0;
             } else if (c >= ' ') {
