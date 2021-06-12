@@ -28,8 +28,10 @@ flash: $(PRG).hex
 	# $(AVRDUDE) -C $(AVRDUDECONF) -c avrisp2 -p m8 -v -v -U flash:w:$<:i
 	$(AVRDUDE) -C $(AVRDUDECONF) -c avrispmkII -p m162 -U flash:w:$<:i
 
+pd44.o:  ../shared/pd44.c 
+	${CC} ${CFLAGS} -c $<
+
 .c.o:
-	${CC} ${CFLAGS} -c $< -S
 	${CC} ${CFLAGS} -c $<
 
 $(PRG).elf: $(OBJS)
