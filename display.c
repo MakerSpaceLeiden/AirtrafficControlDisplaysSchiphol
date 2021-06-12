@@ -14,8 +14,6 @@
 
 
 volatile _Bool d_pressed, u_pressed;
-char test_b[20];
-int test_int = 0;
 char brightness = 3;
 
 ISR (TIMER1_OVF_vect) {
@@ -145,12 +143,7 @@ int main(void) {
             u_pressed=0;
 
         }
-        UART_send("r");
-        sprintf(test_b, "%d", brightness);
-        UART_send(test_b);
-        UART_send("O");
-        UART_send("\n");
-        _delay_ms(100);
+
     }
     return (0);
 }
