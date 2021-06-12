@@ -1,5 +1,5 @@
 PRG            = dsip
-SRC            = display.c pd44.c schiphol50228.c
+SRC            = display.c ../shared/pd44.c schiphol50228.c
 OBJS           = display.o pd44.o schiphol50228.o
 
 MCU_TARGET     = atmega161
@@ -13,8 +13,8 @@ LIBS           =
 
 CC             = avr-gcc
 
-override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS) -D F_CPU=8000000
-override LDFLAGS       = -Wl,-Map,$(PRG).map
+override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS) -D F_CPU=8000000 -I../shared -I.
+override LDFLAGS       = -Wl,-Map,$(PRG).map 
 
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump

@@ -114,7 +114,7 @@
 #  define DDROC DDRD
 #  define OCR OCR1A
 #elif defined(__AVR_ATmega64__) || defined(__AVR_ATmega128__) || \
-      defined(__AVR_ATmega161__) || \
+      defined(__AVR_ATmega161__) || defined(__AVR_ATmega162__) || \
       defined(__AVR_ATmega165__) || defined(__AVR_ATmega169__) || \
       defined(__AVR_ATmega325__) || defined(__AVR_ATmega3250__) || \
       defined(__AVR_ATmega645__) || defined(__AVR_ATmega6450__) || \
