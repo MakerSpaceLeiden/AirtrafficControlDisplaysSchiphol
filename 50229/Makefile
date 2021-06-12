@@ -1,5 +1,5 @@
 PRG            = dsip
-SRC            = display.c pd44.c schiphol50229.c
+SRC            = display.c ../shared/pd44.c schiphol50229.c
 OBJS           = display.o pd44.o schiphol50229.o
 
 MCU_TARGET     = atmega162
