@@ -49,8 +49,11 @@
  */
 #define MPLEX_A      C,3
 #define MPLEX_B      C,4
-#define MPLEX_C      C,5
-#define MPLEX_D      C,6 // Incorrect !
+#define MPLEX_CLOW   C,5
+#define MPLEX_DHIGH  D,6
+
+#define MPLEX_E1     C,6
+#define MPLEX_E2     C,7
 
 // Push buttons front
 #define BUTT_UP	     D,2

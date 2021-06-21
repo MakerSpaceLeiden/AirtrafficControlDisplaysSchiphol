@@ -18,13 +18,21 @@ void init50229(void) {
 }
 
 void select50229(unsigned char c) {
+	SET(MPLEX_A,(c>>0)&1);
+	SET(MPLEX_B,(c>>1)&1);
+
 	if(c < 8) {
-		SET(MPLEX_A,(c>>0)&1);
-		SET(MPLEX_B,(c>>1)&1);
-		SET(MPLEX_C,(c>>2)&1);
+		SET(MPLEX_CHIGH,0);
+		SET(MPLEX_CLOW,(c>>2)&1);
+
+		SET(MPLEX_E1,1);
+		SET(MPLEX_E2,1);
 	} else {
-		SET(MPLEX_C,1);
-		SET(MPLEX_D,(c>>2)&1);
+		SET(MPLEX_CHIGH,(c>>2)&1);
+		SET(MPLEX_CLOW,0);
+
+		SET(MPLEX_E1,0);
+		SET(MPLEX_E2,0);
 	};
 };
 
