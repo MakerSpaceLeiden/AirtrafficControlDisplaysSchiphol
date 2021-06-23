@@ -25,7 +25,10 @@ void _sendByte(unsigned char addr, unsigned char val) {
 
 void pd44_init(void) {
 	OUTPUT(PD44_WR);
-
+	#ifdef PD44_CE1
+	OUTPUT(PD44_CE1);
+	#endif
+	
 	OUTPUT(PD44_RD);
 	LOW(PD44_RD);
 
