@@ -44,16 +44,17 @@
 #define PD44_D6   A,6
 #define PD44_D7   A,7
 
-/* Multiplexer address lines (SNx4HC138) -- see PD datasheet for
+/* DISPlay_SELect lines.
+ * Demultiplexer address lines (SNx4HC138) -- see PD datasheet for
  * how this is used to break out to (here 6) displays.
  */
-#define MPLEX_A      C,3
-#define MPLEX_B      C,4
-#define MPLEX_CLOW   C,5
-#define MPLEX_DHIGH  D,6
+#define DISP_SEL_A0  C,3
+#define DISP_SEL_A1  C,4
+#define DISP_SEL_A2  C,5
 
-#define MPLEX_E1     C,6
-#define MPLEX_E2     C,7
+/* Display enable lines, also for adressing */ 
+#define DISP_SEL_UPPER2  C,6 /* E1 for upper 2 rows */
+#define DISP_SEL_LOWER2  C,7 /* E1 for lower 2 rows */
 
 // Push buttons front
 #define BUTT_UP	     D,2

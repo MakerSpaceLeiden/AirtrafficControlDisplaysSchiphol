@@ -11,29 +11,19 @@
 #include "pd44.h"	
 
 void init50229(void) {
-	OUTPUT(MPLEX_A);
-	OUTPUT(MPLEX_B);
-	OUTPUT(MPLEX_C);
-	OUTPUT(MPLEX_D);
+	OUTPUT(DISP_SEL_A0);
+	OUTPUT(DISP_SEL_A1);
+	OUTPUT(DISP_SEL_A2);
+	OUTPUT(DISP_SEL_UPPER2);
+	OUTPUT(DISP_SEL_LOWER2);
 }
 
 void select50229(unsigned char c) {
-	SET(MPLEX_A,(c>>0)&1);
-	SET(MPLEX_B,(c>>1)&1);
-
-	if(c < 8) {
-		SET(MPLEX_CHIGH,0);
-		SET(MPLEX_CLOW,(c>>2)&1);
-
-		SET(MPLEX_E1,1);
-		SET(MPLEX_E2,1);
-	} else {
-		SET(MPLEX_CHIGH,(c>>2)&1);
-		SET(MPLEX_CLOW,0);
-
-		SET(MPLEX_E1,0);
-		SET(MPLEX_E2,0);
-	};
+	SET(DISP_SEL_A2,(c>>0)&1);
+	SET(DISP_SEL_A1,(c>>1)&1);
+	SET(DISP_SEL_A0,(c>>2)&1);
+	SET(DISP_SEL_LOWER2,(c>>3)&1);
+	SET(DISP_SEL_UPPER2,!((c>>3)&1));
 };
 
 void setDisplay(int display, char * str) {
