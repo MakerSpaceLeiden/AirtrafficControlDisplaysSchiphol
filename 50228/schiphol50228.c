@@ -14,7 +14,8 @@ void init50228(void) {
 	OUTPUT(MPLEX_A);
 	OUTPUT(MPLEX_B);
 	OUTPUT(MPLEX_C);
-
+	OUTPUT(PD44_CE1);
+	HIGH(PD44_CE1);
 }
 
 void select50228(unsigned char c) {
