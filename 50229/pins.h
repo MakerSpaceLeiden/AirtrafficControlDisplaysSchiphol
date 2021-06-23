@@ -8,25 +8,25 @@
 #include <avr/iom162.h>
 
 #define _SET(type,name,bit)          type ## name  |= _BV(bit)    
-#define _CLEAR(type,name,bit)        type ## name  &= ~ _BV(bit)        
+#define _RLEAR(type,name,bit)        type ## name  &= ~ _BV(bit)        
 #define _TOGGLE(type,name,bit)       type ## name  ^= _BV(bit)    
 #define _GET(type,name,bit)          ((type ## name >> bit) &  1)
 #define _PUT(type,name,bit,value)    type ## name = ( type ## name & ( ~ _BV(bit)) ) | ( ( 1 & (unsigned char)value ) << bit )
 
 #define OUTPUT(pin)         _SET(DDR,pin)    
-#define INPUT(pin)          _CLEAR(DDR,pin)    
+#define INPUT(pin)          _RLEAR(DDR,pin)    
 #define HIGH(pin)           _SET(PORT,pin)
-#define LOW(pin)            _CLEAR(PORT,pin)    
+#define LOW(pin)            _RLEAR(PORT,pin)    
 #define SET(pin,value)      _PUT(PORT,pin,value)
 #define TOGGLE(pin)         _TOGGLE(PORT,pin)    
 #define READ(pin)           _GET(PIN,pin)
 
 /* PD4435 display */
 
-#define PD44_RST      E,2
+#define PD44_CST      E,2
 
 #define PD44_WR      D,6
-#define PD44_RD      D,7
+#define PD44_CD      D,7
 
 #define PD44_A0      C,0
 #define PD44_A1      C,1
@@ -57,7 +57,7 @@
 
 /*
  *  Push buttons on 50229 board are in a key matrix
- * row/col 	PD2 PD3	PD4	PD5
+ *       PD2 PD3 PD4	PD5
  * PB3      UP  WIS	RVR RD 06
  * PB2 	    22  27  36R  06
  * PB1 	    36L 18L 18R  CLR
@@ -65,14 +65,26 @@
  * 
  * Down is between PD4 and PD5, Up between PD2 and PB3
  */
-#define KEY_R0 B,0
-#define KEY_R1 B,1
-#define KEY_R2 B,2
-#define KEY_R3 B,3
-#define KEY_C0 D,2
-#define KEY_C1 D,3
-#define KEY_C2 D,4
-#define KEY_C3 D,5
+#define KEY_ROWS	(4)
+#define KEY_COLS	(4)
+
+#define KEY_C  		PINB
+#define KEY_C_FROM 	(0)
+#define KEY_C_MASK	(0xF << KEY_C_FROM)
+
+#define KEY_C0 B,0
+#define KEY_C1 B,1
+#define KEY_C2 B,2
+#define KEY_C3 B,3
+
+#define KEY_R  		PORTD
+#define KEY_R_FROM	(2)
+#define KEY_R_MASK 	(0xF << KEY_R_FROM)
+
+#define KEY_R0 D,2
+#define KEY_R1 D,3
+#define KEY_R2 D,4
+#define KEY_R3 D,5
  
  /* LEDs
   * The LED's under the switchcaps are driven trough the 2nd demux and a few flipflops

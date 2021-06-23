@@ -9,7 +9,10 @@
 #include "pins.h"
 #include "pd44.h"
 #include "serial.h"
-#include "schiphol50229.h"
+
+#include "pd50229.h"
+#include "leds50229.h"
+#include "buttons50229.h"
 
 ISR (TIMER1_OVF_vect)	
 {
@@ -27,25 +30,23 @@ int main (void)
     TIMSK = _BV (TOIE1);
     sei ();
 
-    init50229();
     pd44_init();
+    init50229();
+    init50229_leds();
+    init50229_buttons();
 
 	/* Clear displays first */
 	for(int displ = 0; displ < DISPLAYS; displ++) { 
         select50229(displ);
         pd44_cls();
     }
-    WriteLEDs(0,0);
-    WriteLEDs(1,0);
-    WriteLEDs(2,0);
-    
 	for(int LED = 0; LED < LEDS; LED++) { 
-		WriteLED(LED,1);
+		led_set(LED,1);
 		_delay_ms(100);
     }
     
 	for(int LED = 0; LED < LEDS; LED++) { 
-		WriteLED(LED,0);
+		led_set(LED,0);
 		_delay_ms(100);
     }
 
@@ -58,7 +59,7 @@ int main (void)
 	setDisplay(displ, str);
     } 
 	//for(;;){};
-    _delay_ms(1000);
+    _delay_ms(500);
    
    for(int displ = 0; displ < DISPLAYS; displ++) {
         select50229(displ);
@@ -70,7 +71,7 @@ int main (void)
     };
    
    //for(;;){};
-   _delay_ms(1000);
+   _delay_ms(500);
    
         
     //char str[] = "  Makerspace        Leiden            all your bases are belong to us";
@@ -81,6 +82,11 @@ int main (void)
 
     for (int i = 0; ; i++) {
         for(int displ = 0; displ < DISPLAYS; displ++) {
+		const char * b = butt_scan();
+		if (b) {
+			setDisplay(0,b);
+			 _delay_ms(100);
+		};
 			select50229(displ);
 			pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
 			pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
@@ -89,7 +95,7 @@ int main (void)
 		};
 		//for(;;){};
         _delay_ms(100); 
-        WriteLED(i%LEDS,i%2);
+        led_set(i%LEDS,i%2);
     };
     UART_send("Ready for input\n"); 
     for(;;) { 

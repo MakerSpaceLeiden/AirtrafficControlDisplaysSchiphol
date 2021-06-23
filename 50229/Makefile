@@ -1,6 +1,6 @@
 PRG            = dsip
-SRC            = display.c schiphol50229.c
-OBJS           = display.o pd44.o schiphol50229.o serial.o
+SRC            = display.c leds50229.o pd50229.c buttons50229.c
+OBJS           = display.o pd44.o serial.o leds50229.o pd50229.o buttons50229.o
 
 MCU_TARGET     = atmega162
 OPTIMIZE       = -O3

@@ -6,8 +6,8 @@
 
 void init50229(void);
 void select50229(unsigned char display);
-void setDisplay(int display, char * str);
-void setFullDisplay(char * str);
+void setDisplay(int display, const char * str);
+void setFullDisplay(const char * str);
 void setLED(unsigned char LED);
 void WriteLED(unsigned char LED, unsigned char value);
 void WriteLEDs(unsigned char col, unsigned char rows);
