@@ -35,6 +35,19 @@ int main (void)
         select50229(displ);
         pd44_cls();
     }
+    WriteLEDs(0,0);
+    WriteLEDs(1,0);
+    WriteLEDs(2,0);
+    
+	for(int LED = 0; LED < LEDS; LED++) { 
+		WriteLED(LED,1);
+		_delay_ms(100);
+    }
+    
+	for(int LED = 0; LED < LEDS; LED++) { 
+		WriteLED(LED,0);
+		_delay_ms(100);
+    }
 
     for(int displ = 0; displ < DISPLAYS; displ++) {
 	char * str = "    ";
@@ -76,6 +89,7 @@ int main (void)
 		};
 		//for(;;){};
         _delay_ms(100); 
+        WriteLED(i%LEDS,i%2);
     };
     UART_send("Ready for input\n"); 
     for(;;) { 
