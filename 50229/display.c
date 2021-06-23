@@ -44,23 +44,39 @@ int main (void)
         pd44_brigthness(3);
 	setDisplay(displ, str);
     } 
-	for(;;){};
+	//for(;;){};
     _delay_ms(1000);
-
-    char str[] = "  Makerspace        Leiden            all your bases are belong to us";
+   
+   for(int displ = 0; displ < DISPLAYS; displ++) {
+        select50229(displ);
+        pd44_brigthness(3);
+		pd44_sendChar(3, 'A' );
+		pd44_sendChar(2, 'B' );
+		pd44_sendChar(1, 'C' );
+		pd44_sendChar(0, 'D' );
+    };
+   
+   //for(;;){};
+   _delay_ms(1000);
+   
+        
+    //char str[] = "  Makerspace        Leiden            all your bases are belong to us";
+    //char str[] = "1234567890abcdef"; /* simpler test */
+    char str[]   = "  Hello World from     MakerSpace Leiden          On 50229 display   ";     
+    
     int at = 0;
 
     for (int i = 0; ; i++) {
-       for(int displ = 0; displ < DISPLAYS; displ++) {
-        select50229(displ);
-	pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
-	pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
-	pd44_sendChar(1, str[ ( displ*4 + i + 2 ) % (sizeof(str)-1) ]);
-	pd44_sendChar(0, str[ ( displ*4 + i + 3 ) % (sizeof(str)-1) ]);
-        };
-	for(;;){};
+        for(int displ = 0; displ < DISPLAYS; displ++) {
+			select50229(displ);
+			pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
+			pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
+			pd44_sendChar(1, str[ ( displ*4 + i + 2 ) % (sizeof(str)-1) ]);
+			pd44_sendChar(0, str[ ( displ*4 + i + 3 ) % (sizeof(str)-1) ]);
+		};
+		//for(;;){};
         _delay_ms(100); 
-      };
+    };
     UART_send("Ready for input\n"); 
     for(;;) { 
       int c = UART_get();
