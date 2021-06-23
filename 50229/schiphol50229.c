@@ -19,11 +19,21 @@ void init50229(void) {
 }
 
 void select50229(unsigned char c) {
-	SET(DISP_SEL_A2,(c>>0)&1);
+	SET(DISP_SEL_A0,(c>>0)&1);
 	SET(DISP_SEL_A1,(c>>1)&1);
-	SET(DISP_SEL_A0,(c>>2)&1);
-	SET(DISP_SEL_LOWER2,(c>>3)&1);
-	SET(DISP_SEL_UPPER2,!((c>>3)&1));
+	SET(DISP_SEL_A2,(c>>2)&1);
+	//SET(DISP_SEL_LOWER2,(c>>3)&1);
+	//SET(DISP_SEL_UPPER2,(c>>3)^1);
+	if(c<8){ 
+		// TODO: was c<8 but that overwrites so experimentaly try c>8 so it should swap rows.
+		SET(DISP_SEL_LOWER2,0);
+		SET(DISP_SEL_UPPER2,1);
+	}
+	else{
+		SET(DISP_SEL_LOWER2,1);
+		SET(DISP_SEL_UPPER2,0);
+	}
+	//_delay_ms(100); /* to see it happen one display at a time*/
 };
 
 void setDisplay(int display, char * str) {

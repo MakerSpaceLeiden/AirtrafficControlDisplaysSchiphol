@@ -48,7 +48,7 @@
  * Demultiplexer address lines (SNx4HC138) -- see PD datasheet for
  * how this is used to break out to (here 6) displays.
  */
-#define DISP_SEL_A0  C,3
+#define DISP_SEL_A0  C,3 
 #define DISP_SEL_A1  C,4
 #define DISP_SEL_A2  C,5
 
