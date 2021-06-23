@@ -23,7 +23,6 @@
 
 /* PD4435 display */
 
-#define PD44_CE1      C,6
 #define PD44_RST      E,2
 
 #define PD44_WR      D,7

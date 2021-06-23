@@ -33,11 +33,10 @@ int main (void)
 	/* Clear displays first */
 	for(int displ = 0; displ < DISPLAYS; displ++) { 
         select50229(displ);
-        pd44_brigthness(3);
-		setDisplay(displ, 0x80); /*0x80 = clear */
+        pd44_cls();
     }
 
-    for(int displ = 0; displ < 8; displ++) {
+    for(int displ = 0; displ < DISPLAYS; displ++) {
 	char * str = "    ";
 	str[1] = displ / 10 + '0';
 	str[2] = displ % 10 + '0';

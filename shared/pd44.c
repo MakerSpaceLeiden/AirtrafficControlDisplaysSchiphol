@@ -8,7 +8,6 @@
 #include "pins.h"
 
 void _sendByte(unsigned char addr, unsigned char val) {
-	HIGH(PD44_CE1);
 	HIGH(PD44_RD);
 	HIGH(PD44_WR);
 
@@ -22,12 +21,10 @@ void _sendByte(unsigned char addr, unsigned char val) {
 	HIGH(PD44_WR);
 
 	LOW(PD44_RD);
-	LOW(PD44_CE1);
 }
 
 void pd44_init(void) {
 	OUTPUT(PD44_WR);
-	OUTPUT(PD44_CE1);
 
 	OUTPUT(PD44_RD);
 	LOW(PD44_RD);
