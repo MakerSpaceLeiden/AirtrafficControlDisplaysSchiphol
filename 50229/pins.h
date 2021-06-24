@@ -81,7 +81,7 @@
 #define KEY_R2 B,2
 #define KEY_R3 B,3
 
-#define KEY_C  		PIND
+#define KEY_C  		D
 #define KEY_C_FROM	(2)
 #define KEY_C_MASK 	(0xF << KEY_C_FROM)
 

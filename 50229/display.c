@@ -28,28 +28,22 @@ void update_brightness(){
 }
 
 void read_keys(){
-	unsigned char key;
-	key=keyscan50229();
-	if(key!=0xFF){
-	/* to show key number */
-		char * str = "    ";
-		str[1] = key / 10 + '0';
-		str[2] = key % 10 + '0';
-		setDisplay(0, str);
+	// unsigned char key;
+	const char * but = butt_scan();
+	if (but == 0)
+		return;
 
-	if(key==16){
-		if(brightness>0) brightness--;
-			update_brightness();
-		}
-	if(key==15){
-		if(brightness<3) brightness++;
-			update_brightness();
-		}
-	if(key<NUMLEDS){
-		 led_set(key,!led_get(key)); /* togle led on buttonpress if it is a button with LED*/
+	setDisplay(0, but);
+	if(but[0] == 'D' && brightness>0) {
+		brightness--;
+		update_brightness();
 	}
+	if(but[0] == 'U' && brightness<3) {
+		brightness++;
+		update_brightness();
+	}
+//	if(key<NUMLEDS){ led_set(key,!led_get(key)); /* togle led on buttonpress if it is a button with LED*/ }
 	_delay_ms(100);	
-	}
 }
 
 int main (void)
@@ -112,18 +106,13 @@ int main (void)
     int at = 0;
 
     for (int i = 0; ; i++) {
-   //     read_keys();
         for(int displ = 0; displ < DISPLAYS; displ++) {
-		const char * b = butt_scan();
-		if (b) {
-			setDisplay(0,b);
-			 _delay_ms(100);
-		};
-//			select50229(displ);
-//			pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
-//			pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
-//			pd44_sendChar(1, str[ ( displ*4 + i + 2 ) % (sizeof(str)-1) ]);
-//			pd44_sendChar(0, str[ ( displ*4 + i + 3 ) % (sizeof(str)-1) ]);
+        	read_keys();
+			select50229(displ);
+			pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
+			pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
+			pd44_sendChar(1, str[ ( displ*4 + i + 2 ) % (sizeof(str)-1) ]);
+			pd44_sendChar(0, str[ ( displ*4 + i + 3 ) % (sizeof(str)-1) ]);
 		};
 		//for(;;){};
         _delay_ms(100); 

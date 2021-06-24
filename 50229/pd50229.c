@@ -44,19 +44,3 @@ void setFullDisplay(const char * str) {
 	for(int d = 0; d < DISPLAYS && d*4 < len; d++) 
 		setDisplay(d, str + d * 4);
 }
-
-unsigned char keyscan50229(){
-	/*scan the one button not in the matrix: */
-	HIGH(KEY_R3);
-	INPUT(KEY_R0);
-	INPUT(KEY_R1);
-	INPUT(KEY_R2);
-	INPUT(KEY_R3);
-	
-	LOW(KEY_C3);
-	OUTPUT(KEY_C3);
-	_delay_ms(5);
-	if(0==READ(KEY_C2)) return 16;
-	
-	return 0xFF;
-}; 

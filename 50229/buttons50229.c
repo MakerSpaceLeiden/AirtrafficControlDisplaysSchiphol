@@ -30,7 +30,6 @@ init50229_buttons(void)
 	//
         PORTB &= ~KEY_R_MASK; 
 
-
 	INPUT(KEY_C0);
 	INPUT(KEY_C1);
 	INPUT(KEY_C2);
@@ -48,19 +47,22 @@ init50229_buttons(void)
 // we cannot use any interrupts - as those are ony wired to port A and C.
 const char * butt_scan()
 {
+	unsigned char col = 255;
+	unsigned char row = 255;
+
 	// Put the 0's of the output onto all wires to see if
 	// anything is pressed.
 	//
 	DDR(KEY_R) |= KEY_R_MASK;
-	unsigned char v = KEY_C & KEY_C_MASK;
+	_delay_us(2);
+	unsigned char v = PIN(KEY_C) & KEY_C_MASK;
 
-	if (KEY_C_MASK == v)
-		return 0;
+	if (KEY_C_MASK == v) 
+		goto check_specials;
 
 	// Scan for the pressed key (in a very naive way; this should
 	// be a binary search, etc).
 	//
-	unsigned char col = 255;
 
 	for(unsigned i = 0; i < KEY_COLS; i++) {
 		if ((v & (1 <<(KEY_C_FROM + i))) == 0) { 
@@ -68,7 +70,6 @@ const char * butt_scan()
 			break;
 		}
 	};
-	unsigned char row = 255;
 
 	// one by one - make them low; leaving the others in HiZ (input) state
 	// to prvent shortcircuits.
@@ -77,14 +78,32 @@ const char * butt_scan()
 		DDR(KEY_R)= (DDR(KEY_R)& ~KEY_R_MASK) |  (1<<(KEY_R_FROM + i));
 
                 _delay_us(2);
-		if (!(KEY_C & (1<<(KEY_C_FROM + col)))) {
+		if (!(PIN(KEY_C) & (1<<(KEY_C_FROM + col)))) {
 			row = i;
 			break;
 		};
 	};
-	if (row == 255 || col == 255)
-		return 0;
 
-	return _labels[row][col];
+	if (row < KEY_ROWS && col < KEY_COLS)
+		return _labels[row][col];
+
+check_specials:
+	DDR(KEY_R) &= ~KEY_R_MASK;
+
+	// check the special button wired between col 2 and col 3.
+	//
+	OUTPUT(KEY_C3);
+	SET(KEY_C3,0);
+
+	_delay_us(2);
+	v = READ(KEY_C2);
+
+	SET(KEY_C3,1);
+	INPUT(KEY_C3);
+
+	if (v == 0)
+		return "DWN";
+
+	return 0;
 };
 
