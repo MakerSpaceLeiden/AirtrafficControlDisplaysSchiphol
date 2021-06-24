@@ -75,6 +75,12 @@ void led_update(unsigned char at)
 	_led_update_col(c, (_LEDs >> (c * 5)) & 0x1F);
 }
 
+unsigned char led_get(unsigned char at) 
+{
+        at %= NUMLEDS;
+        return ((_LEDs>>at)&1);
+}
+
 void led_set(unsigned char at, unsigned char onoff)
 {
 	if (onoff)

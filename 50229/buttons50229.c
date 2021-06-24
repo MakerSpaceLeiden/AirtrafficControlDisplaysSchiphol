@@ -10,19 +10,20 @@
 #include "buttons50229.h"
 
 static const char *_labels[KEY_ROWS][KEY_COLS] = {
-	{ "UP", "WIS","RVR","RD06" },
-	{ "22", "27", "36R","06"   },
-	{ "36L","18L","18R","CLR"  }, 
 	{ "4",  "3",  "2",  "1"    },		// empty rows buttons
+	{ "36L","18L","18R","CLR"  }, 
+	{ "22", "27", "36R","06"   },
+	{ "UP", "WIS","RVR","RD06" },
 };
 
 void 
 init50229_buttons(void)
 {
-	OUTPUT(KEY_R0);
-	OUTPUT(KEY_R1);
-	OUTPUT(KEY_R2);
-	OUTPUT(KEY_R3);
+	// All in HiZ mode (to prevent shortcircuit when user presses two buttons).
+	INPUT(KEY_R0);
+	INPUT(KEY_R1);
+	INPUT(KEY_R2);
+	INPUT(KEY_R3);
 
 	// Make all the rows low - so that the buttons are seen
 	// when pressed.
@@ -42,14 +43,19 @@ init50229_buttons(void)
 	SET(KEY_C2, 1);
 	SET(KEY_C3, 1);
 
+	// set all outputs to 0 - but keep them off for now (HiZ)
+	KEY_R &= ~KEY_R_MASK; 
 }
 
 // we cannot use any interrupts - as those are ony wired to port A and C.
 const char * butt_scan()
 {
+	// Put the 0's of the output onto all wires to see if
+	// anything is pressed.
+	//
+	DDRB |= KEY_R_MASK;
 	unsigned char v = KEY_C & KEY_C_MASK;
 
-	// See if anything is pressed (pulled low).
 	if (KEY_C_MASK == v)
 		return 0;
 
@@ -66,18 +72,21 @@ const char * butt_scan()
 	};
 	unsigned char row = 255;
 
+	// one by one - make them low; leaving the others in HiZ (input) state
+	// to prvent shortcircuits.
+	//
 	for(unsigned i = 0; i < KEY_ROWS; i++) {
-		KEY_R = (KEY_R & ~KEY_R_MASK) | (KEY_R_MASK & ~(1<<(KEY_R_FROM + i)));
+		DDRB = (DDRB & ~KEY_R_MASK) |  (1<<(KEY_R_FROM + i));
+
 		_delay_ms(1);
-		if ((KEY_C & KEY_C_MASK) != v) {
+		if (!(KEY_C & (1<<(KEY_C_FROM + col)))) {
 			row = i;
 			break;
 		};
 	};
-	KEY_R &= ~(KEY_R_MASK);
-	
 	if (row == 255 || col == 255)
 		return 0;
 
-	return _labels[col][row];
+	return _labels[row][col];
 };
+

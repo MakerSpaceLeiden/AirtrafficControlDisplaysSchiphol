@@ -7,5 +7,7 @@ void leds_clear(void);
 void leds_update(void);
 	
 void led_set(unsigned char at, unsigned char onoff);
+unsigned char led_get(unsigned char at);
+
 
 #endif

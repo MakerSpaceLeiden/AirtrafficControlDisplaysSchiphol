@@ -16,17 +16,6 @@ void init50229(void) {
 	OUTPUT(DISP_SEL_A2);
 	OUTPUT(DISP_SEL_UPPER2);
 	OUTPUT(DISP_SEL_LOWER2);
-	OUTPUT(LED_E3);
-	OUTPUT(LED_nE2);
-	OUTPUT(LED_nE1);
-	OUTPUT(LED_R0);
-	OUTPUT(LED_R1);
-	OUTPUT(LED_R2);
-	OUTPUT(LED_R3);
-	OUTPUT(LED_R4);
-	OUTPUT(LED_SEL0);
-	OUTPUT(LED_SEL1);
-	OUTPUT(LED_SEL2);
 }
 
 void select50229(unsigned char c) {
@@ -56,3 +45,18 @@ void setFullDisplay(const char * str) {
 		setDisplay(d, str + d * 4);
 }
 
+unsigned char keyscan50229(){
+	/*scan the one button not in the matrix: */
+	HIGH(KEY_R3);
+	INPUT(KEY_R0);
+	INPUT(KEY_R1);
+	INPUT(KEY_R2);
+	INPUT(KEY_R3);
+	
+	LOW(KEY_C3);
+	OUTPUT(KEY_C3);
+	_delay_ms(5);
+	if(0==READ(KEY_C2)) return 16;
+	
+	return 0xFF;
+}; 

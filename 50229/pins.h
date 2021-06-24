@@ -68,27 +68,29 @@
 #define KEY_ROWS	(4)
 #define KEY_COLS	(4)
 
-#define KEY_C  		PINB
-#define KEY_C_FROM 	(0)
-#define KEY_C_MASK	(0xF << KEY_C_FROM)
+#define KEY_R  		PORTB
+#define KEY_R_FROM 	(0)
+#define KEY_R_MASK	(0xF << KEY_R_FROM)
 
-#define KEY_C0 B,0
-#define KEY_C1 B,1
-#define KEY_C2 B,2
-#define KEY_C3 B,3
+#define KEY_R0 B,0
+#define KEY_R1 B,1
+#define KEY_R2 B,2
+#define KEY_R3 B,3
 
-#define KEY_R  		PORTD
-#define KEY_R_FROM	(2)
-#define KEY_R_MASK 	(0xF << KEY_R_FROM)
+#define KEY_C  		PIND
+#define KEY_C_FROM	(2)
+#define KEY_C_MASK 	(0xF << KEY_C_FROM)
 
-#define KEY_R0 D,2
-#define KEY_R1 D,3
-#define KEY_R2 D,4
-#define KEY_R3 D,5
+#define KEY_C0 D,2
+#define KEY_C1 D,3
+#define KEY_C2 D,4
+#define KEY_C3 D,5
  
  /* LEDs
   * The LED's under the switchcaps are driven trough the 2nd demux and a few flipflops
   */
+#define NUMLEDS 15
+
 #define LED_R0 A,0
 #define LED_R1 A,1 
 #define LED_R2 A,2

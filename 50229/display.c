@@ -14,8 +14,42 @@
 #include "leds50229.h"
 #include "buttons50229.h"
 
+char brightness = 3;
+
 ISR (TIMER1_OVF_vect)	
 {
+}
+
+void update_brightness(){
+    for (int displ = 0; displ < DISPLAYS; displ++) {
+        select50229(displ);
+        pd44_brigthness(brightness);
+    };
+}
+
+void read_keys(){
+	unsigned char key;
+	key=keyscan50229();
+	if(key!=0xFF){
+	/* to show key number */
+		char * str = "    ";
+		str[1] = key / 10 + '0';
+		str[2] = key % 10 + '0';
+		setDisplay(0, str);
+
+	if(key==16){
+		if(brightness>0) brightness--;
+			update_brightness();
+		}
+	if(key==15){
+		if(brightness<3) brightness++;
+			update_brightness();
+		}
+	if(key<NUMLEDS){
+		 led_set(key,!led_get(key)); /* togle led on buttonpress if it is a button with LED*/
+	}
+	_delay_ms(100);	
+	}
 }
 
 int main (void)
@@ -40,12 +74,12 @@ int main (void)
         select50229(displ);
         pd44_cls();
     }
-	for(int LED = 0; LED < LEDS; LED++) { 
+	for(int LED = 0; LED < NUMLEDS; LED++) { 
 		led_set(LED,1);
 		_delay_ms(100);
     }
     
-	for(int LED = 0; LED < LEDS; LED++) { 
+	for(int LED = 0; LED < NUMLEDS; LED++) { 
 		led_set(LED,0);
 		_delay_ms(100);
     }
@@ -55,24 +89,21 @@ int main (void)
 	str[1] = displ / 10 + '0';
 	str[2] = displ % 10 + '0';
         select50229(displ);
-        pd44_brigthness(3);
+        pd44_brigthness(brightness);
 	setDisplay(displ, str);
     } 
-	//for(;;){};
     _delay_ms(500);
    
    for(int displ = 0; displ < DISPLAYS; displ++) {
         select50229(displ);
-        pd44_brigthness(3);
+        pd44_brigthness(brightness);
 		pd44_sendChar(3, 'A' );
 		pd44_sendChar(2, 'B' );
 		pd44_sendChar(1, 'C' );
 		pd44_sendChar(0, 'D' );
     };
    
-   //for(;;){};
-   _delay_ms(500);
-   
+   _delay_ms(1000);
         
     //char str[] = "  Makerspace        Leiden            all your bases are belong to us";
     //char str[] = "1234567890abcdef"; /* simpler test */
@@ -81,21 +112,22 @@ int main (void)
     int at = 0;
 
     for (int i = 0; ; i++) {
+   //     read_keys();
         for(int displ = 0; displ < DISPLAYS; displ++) {
 		const char * b = butt_scan();
 		if (b) {
 			setDisplay(0,b);
 			 _delay_ms(100);
 		};
-			select50229(displ);
-			pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
-			pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
-			pd44_sendChar(1, str[ ( displ*4 + i + 2 ) % (sizeof(str)-1) ]);
-			pd44_sendChar(0, str[ ( displ*4 + i + 3 ) % (sizeof(str)-1) ]);
+//			select50229(displ);
+//			pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
+//			pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
+//			pd44_sendChar(1, str[ ( displ*4 + i + 2 ) % (sizeof(str)-1) ]);
+//			pd44_sendChar(0, str[ ( displ*4 + i + 3 ) % (sizeof(str)-1) ]);
 		};
 		//for(;;){};
         _delay_ms(100); 
-        led_set(i%LEDS,i%2);
+        led_set(i%NUMLEDS,i%2);
     };
     UART_send("Ready for input\n"); 
     for(;;) { 
