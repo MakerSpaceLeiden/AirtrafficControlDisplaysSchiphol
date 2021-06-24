@@ -92,14 +92,14 @@ check_specials:
 
 	// check the special button wired between col 2 and col 3.
 	//
-	OUTPUT(KEY_C3);
 	SET(KEY_C3,0);
+	OUTPUT(KEY_C3); /* after disabling pull-up/setting low */
 
 	_delay_us(2);
 	v = READ(KEY_C2);
 
-	SET(KEY_C3,1);
-	INPUT(KEY_C3);
+	INPUT(KEY_C3); 
+	SET(KEY_C3,1);  /* after setting back to input! (prevent shorts) */
 
 	if (v == 0)
 		return "DWN";
