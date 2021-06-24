@@ -28,7 +28,8 @@ init50229_buttons(void)
 	// Make all the rows low - so that the buttons are seen
 	// when pressed.
 	//
-	KEY_R &= ~(KEY_R_MASK);
+        PORTB &= ~KEY_R_MASK; 
+
 
 	INPUT(KEY_C0);
 	INPUT(KEY_C1);
@@ -42,9 +43,6 @@ init50229_buttons(void)
 	SET(KEY_C1, 1);
 	SET(KEY_C2, 1);
 	SET(KEY_C3, 1);
-
-	// set all outputs to 0 - but keep them off for now (HiZ)
-	KEY_R &= ~KEY_R_MASK; 
 }
 
 // we cannot use any interrupts - as those are ony wired to port A and C.
@@ -53,7 +51,7 @@ const char * butt_scan()
 	// Put the 0's of the output onto all wires to see if
 	// anything is pressed.
 	//
-	DDRB |= KEY_R_MASK;
+	DDR(KEY_R) |= KEY_R_MASK;
 	unsigned char v = KEY_C & KEY_C_MASK;
 
 	if (KEY_C_MASK == v)
@@ -76,9 +74,9 @@ const char * butt_scan()
 	// to prvent shortcircuits.
 	//
 	for(unsigned i = 0; i < KEY_ROWS; i++) {
-		DDRB = (DDRB & ~KEY_R_MASK) |  (1<<(KEY_R_FROM + i));
+		DDR(KEY_R)= (DDR(KEY_R)& ~KEY_R_MASK) |  (1<<(KEY_R_FROM + i));
 
-		_delay_ms(1);
+                _delay_us(2);
 		if (!(KEY_C & (1<<(KEY_C_FROM + col)))) {
 			row = i;
 			break;

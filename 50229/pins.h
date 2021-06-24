@@ -7,12 +7,16 @@
 
 #include <avr/iom162.h>
 
+#define _MAP(type,name)              type ## name 
 #define _SET(type,name,bit)          type ## name  |= _BV(bit)    
 #define _RLEAR(type,name,bit)        type ## name  &= ~ _BV(bit)        
 #define _TOGGLE(type,name,bit)       type ## name  ^= _BV(bit)    
 #define _GET(type,name,bit)          ((type ## name >> bit) &  1)
 #define _PUT(type,name,bit,value)    type ## name = ( type ## name & ( ~ _BV(bit)) ) | ( ( 1 & (unsigned char)value ) << bit )
 
+#define DDR(port)	    _MAP(DDR,port)
+#define PORT(port)	    _MAP(PORT,port)
+#define PIN(port)	    _MAP(PIN,port)
 #define OUTPUT(pin)         _SET(DDR,pin)    
 #define INPUT(pin)          _RLEAR(DDR,pin)    
 #define HIGH(pin)           _SET(PORT,pin)
@@ -68,7 +72,7 @@
 #define KEY_ROWS	(4)
 #define KEY_COLS	(4)
 
-#define KEY_R  		PORTB
+#define KEY_R  		B
 #define KEY_R_FROM 	(0)
 #define KEY_R_MASK	(0xF << KEY_R_FROM)
 
