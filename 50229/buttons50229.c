@@ -9,13 +9,6 @@
 
 #include "buttons50229.h"
 
-static const char *_labels[KEY_ROWS][KEY_COLS] = {
-	{ "4",  "3",  "2",  "1"    },		// empty rows buttons
-	{ "36L","18L","18R","CLR"  }, 
-	{ "22", "27", "36R","06"   },
-	{ "UP", "WIS","RVR","RD06" },
-};
-
 void 
 init50229_buttons(void)
 {
@@ -45,7 +38,7 @@ init50229_buttons(void)
 }
 
 // we cannot use any interrupts - as those are ony wired to port A and C.
-const char * butt_scan()
+const unsigned char butt_scan()
 {
 	unsigned char col = 255;
 	unsigned char row = 255;
@@ -85,7 +78,7 @@ const char * butt_scan()
 	};
 
 	if (row < KEY_ROWS && col < KEY_COLS)
-		return _labels[row][col];
+		return row * KEY_COLS + (3-col);
 
 check_specials:
 	DDR(KEY_R) &= ~KEY_R_MASK;
@@ -102,8 +95,22 @@ check_specials:
 	INPUT(KEY_C3);
 
 	if (v == 0)
-		return "DWN";
+		return 16;
 
-	return 0;
+	return -1;
 };
 
+
+const char * butt_scan2label(unsigned char at) {
+	static const char *_labels[KEY_ROWS][KEY_COLS] = {
+		{ "4",  "3",  "2",  "1"    },// empty rows buttons
+		{ "36L","18L","18R","CLR"  }, 
+		{ "22", "27", "36R","06"   },
+		{ "UP", "WIS","RVR","RD06" },
+	};
+	if (at < 15)
+		return _labels[ at / KEY_COLS][ 3 - (at % KEY_COLS) ];
+	if (at == 16)
+		return "DWN";
+	return "";
+}

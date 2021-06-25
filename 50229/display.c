@@ -29,11 +29,13 @@ void update_brightness(){
 
 void read_keys(){
 	// unsigned char key;
-	const char * but = butt_scan();
-	if (but == 0)
+	unsigned char at = butt_scan();
+	if (at == 0)
 		return;
 
+	const char * but = butt_scan2label(at);
 	setDisplay(0, but);
+
 	if(but[0] == 'D' && brightness>0) {
 		brightness--;
 		update_brightness();
@@ -42,8 +44,8 @@ void read_keys(){
 		brightness++;
 		update_brightness();
 	}
-//	if(key<NUMLEDS){ led_set(key,!led_get(key)); /* togle led on buttonpress if it is a button with LED*/ }
-	_delay_ms(100);	
+	led_toggle(at);
+	_delay_ms(200);	
 }
 
 int main (void)

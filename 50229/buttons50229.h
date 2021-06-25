@@ -2,5 +2,6 @@
 #define _H_BUTT
 
 void init50229_buttons(void);
-const char * butt_scan();
+const unsigned char butt_scan();
+const char * butt_scan2label(unsigned char at);
 #endif

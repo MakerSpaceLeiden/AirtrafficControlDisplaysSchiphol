@@ -8,6 +8,7 @@ void leds_update(void);
 	
 void led_set(unsigned char at, unsigned char onoff);
 unsigned char led_get(unsigned char at);
+void led_toggle(unsigned char at);
 
 
 #endif

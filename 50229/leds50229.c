@@ -89,4 +89,9 @@ void led_set(unsigned char at, unsigned char onoff)
 		_LEDs &= ~(1 << at);
 
 	_led_update_col(at/5, (_LEDs >> (((unsigned char)(at/5)) * 5)) & 0x1F);
-};
+}
+
+void led_toggle(unsigned char at)
+{
+	led_set(at, !led_get(at));
+}
