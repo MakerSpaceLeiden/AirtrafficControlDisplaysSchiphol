@@ -30,17 +30,17 @@ void update_brightness(){
 void read_keys(){
 	// unsigned char key;
 	unsigned char at = butt_scan();
-	if (at == 0)
+	if (at == 255)
 		return;
 
 	const char * but = butt_scan2label(at);
 	setDisplay(0, but);
 
-	if(but[0] == 'D' && brightness>0) {
+	if(at == 16 &&  brightness>1) {
 		brightness--;
 		update_brightness();
 	}
-	if(but[0] == 'U' && brightness<3) {
+	if(at ==15 && brightness<3) {
 		brightness++;
 		update_brightness();
 	}
@@ -118,7 +118,7 @@ int main (void)
 		};
 		//for(;;){};
         _delay_ms(100); 
-        led_set(i%NUMLEDS,i%2);
+        //led_set(i%NUMLEDS,i%2);
     };
     UART_send("Ready for input\n"); 
     for(;;) { 

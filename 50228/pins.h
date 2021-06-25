@@ -25,8 +25,8 @@
 #define PD44_CE1      C,6
 #define PD44_RST      E,2
 
-#define PD44_WR      D,7
-#define PD44_RD      D,6
+#define PD44_WR      D,6
+#define PD44_RD      D,7
 
 #define PD44_A0      C,0
 #define PD44_A1      C,1

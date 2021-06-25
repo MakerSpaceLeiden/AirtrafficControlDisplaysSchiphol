@@ -9,8 +9,7 @@
 
 #include "buttons50229.h"
 
-void 
-init50229_buttons(void)
+void init50229_buttons(void)
 {
 	// All in HiZ mode (to prevent shortcircuit when user presses two buttons).
 	INPUT(KEY_R0);
@@ -38,7 +37,7 @@ init50229_buttons(void)
 }
 
 // we cannot use any interrupts - as those are ony wired to port A and C.
-const unsigned char butt_scan()
+unsigned char butt_scan()
 {
 	unsigned char col = 255;
 	unsigned char row = 255;
@@ -78,38 +77,38 @@ const unsigned char butt_scan()
 	};
 
 	if (row < KEY_ROWS && col < KEY_COLS)
-		return row * KEY_COLS + (3-col);
+		return row * KEY_COLS + (KEY_ROWS - col -1);
 
 check_specials:
 	DDR(KEY_R) &= ~KEY_R_MASK;
 
 	// check the special button wired between col 2 and col 3.
 	//
-	OUTPUT(KEY_C3);
 	SET(KEY_C3,0);
+	OUTPUT(KEY_C3); /* after disabling pull-up/setting low */
 
 	_delay_us(2);
 	v = READ(KEY_C2);
 
-	SET(KEY_C3,1);
-	INPUT(KEY_C3);
+	INPUT(KEY_C3); 
+	SET(KEY_C3,1);  /* after setting back to input! (prevent shorts) */
 
 	if (v == 0)
 		return 16;
 
-	return -1;
+	return 255;
 };
 
 
 const char * butt_scan2label(unsigned char at) {
 	static const char *_labels[KEY_ROWS][KEY_COLS] = {
-		{ "4",  "3",  "2",  "1"    },// empty rows buttons
-		{ "36L","18L","18R","CLR"  }, 
-		{ "22", "27", "36R","06"   },
-		{ "UP", "WIS","RVR","RD06" },
+		{ "1", "2", "3", "3", },
+	        { "CLR", "18R", "18L", "36L", },
+		{ "06", "36R", "27", "22", },
+		{ "RD06", "RVR", "WIS", "UP" },
 	};
 	if (at < 15)
-		return _labels[ at / KEY_COLS][ 3 - (at % KEY_COLS) ];
+		return _labels[ at / KEY_COLS][ at % KEY_COLS ];
 	if (at == 16)
 		return "DWN";
 	return "";

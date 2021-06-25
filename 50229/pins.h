@@ -9,7 +9,7 @@
 
 #define _MAP(type,name)              type ## name 
 #define _SET(type,name,bit)          type ## name  |= _BV(bit)    
-#define _RLEAR(type,name,bit)        type ## name  &= ~ _BV(bit)        
+#define _CLEAR(type,name,bit)        type ## name  &= ~ _BV(bit)        
 #define _TOGGLE(type,name,bit)       type ## name  ^= _BV(bit)    
 #define _GET(type,name,bit)          ((type ## name >> bit) &  1)
 #define _PUT(type,name,bit,value)    type ## name = ( type ## name & ( ~ _BV(bit)) ) | ( ( 1 & (unsigned char)value ) << bit )
@@ -18,19 +18,19 @@
 #define PORT(port)	    _MAP(PORT,port)
 #define PIN(port)	    _MAP(PIN,port)
 #define OUTPUT(pin)         _SET(DDR,pin)    
-#define INPUT(pin)          _RLEAR(DDR,pin)    
+#define INPUT(pin)          _CLEAR(DDR,pin)    
 #define HIGH(pin)           _SET(PORT,pin)
-#define LOW(pin)            _RLEAR(PORT,pin)    
+#define LOW(pin)            _CLEAR(PORT,pin)    
 #define SET(pin,value)      _PUT(PORT,pin,value)
 #define TOGGLE(pin)         _TOGGLE(PORT,pin)    
 #define READ(pin)           _GET(PIN,pin)
 
 /* PD4435 display */
 
-#define PD44_CST      E,2
+#define PD44_RST      E,2
 
 #define PD44_WR      D,6
-#define PD44_CD      D,7
+#define PD44_RD      D,7
 
 #define PD44_A0      C,0
 #define PD44_A1      C,1
@@ -71,6 +71,7 @@
  */
 #define KEY_ROWS	(4)
 #define KEY_COLS	(4)
+#define NUMKEYS		(17) //including UP and DOWN
 
 #define KEY_R  		B
 #define KEY_R_FROM 	(0)
