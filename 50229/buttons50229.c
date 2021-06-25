@@ -9,11 +9,19 @@
 
 #include "buttons50229.h"
 
-static const char *_labels[KEY_ROWS][KEY_COLS] = {
-	{ "4",  "3",  "2",  "1"    },		// empty rows buttons
-	{ "36L","18L","18R","CLR"  }, 
-	{ "22", "27", "36R","06"   },
-	{ "UP", "WIS","RVR","RD06" },
+static const char *_labels[NUMKEYS] = {
+"1",  "2",  "3",  "4", // empty row buttons
+"CLR","18R","18C","36C",  
+"06", "36R", "27","22",  
+"RD06", "RVR","WIS","UP",
+"DWN"
+};
+
+static const uint8_t _numbers[KEY_ROWS][KEY_COLS] = {
+	{  3, 2, 1, 0  },
+	{  7, 6, 5, 4  }, 
+	{ 11,10, 9, 8 },
+	{ 15,14,13,12 },
 };
 
 void 
@@ -44,8 +52,16 @@ init50229_buttons(void)
 	SET(KEY_C3, 1);
 }
 
+const char * butt_label(uint8_t key){
+	/* convert button number to button label */
+	if(key<NUMKEYS){
+		return _labels[key];
+		}
+		else return "NaN"; /*not a valid key */
+	}
+
 // we cannot use any interrupts - as those are ony wired to port A and C.
-const char * butt_scan()
+uint8_t butt_scan()
 {
 	unsigned char col = 255;
 	unsigned char row = 255;
@@ -85,7 +101,7 @@ const char * butt_scan()
 	};
 
 	if (row < KEY_ROWS && col < KEY_COLS)
-		return _labels[row][col];
+		return _numbers[row][col];
 
 check_specials:
 	DDR(KEY_R) &= ~KEY_R_MASK;
@@ -102,8 +118,8 @@ check_specials:
 	SET(KEY_C3,1);  /* after setting back to input! (prevent shorts) */
 
 	if (v == 0)
-		return "DWN";
+		return 16;
 
-	return 0;
+	return 255;
 };
 

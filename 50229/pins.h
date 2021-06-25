@@ -71,6 +71,7 @@
  */
 #define KEY_ROWS	(4)
 #define KEY_COLS	(4)
+#define NUMKEYS		(17) //including UP and DOWN
 
 #define KEY_R  		B
 #define KEY_R_FROM 	(0)
