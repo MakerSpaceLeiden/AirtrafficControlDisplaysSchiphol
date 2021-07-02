@@ -20,7 +20,7 @@ ISR (TIMER1_OVF_vect)
 {
 }
 
-void update_brightness(){
+void update_brightness(){  // DLO1414 can't dim, remove.
     for (int displ = 0; displ < DISPLAYS; displ++) {
         select50227(displ);
         pd44_brigthness(brightness);
@@ -68,13 +68,14 @@ int main (void)
 	/* Clear displays first */
 	for(int displ = 0; displ < DISPLAYS; displ++) { 
         select50227(displ);
-        pd44_cls();
+        setDisplay(displ, "  "); // pd44_cls(); won't work, these are not PD44's
     }
+    leds_clear();
 	for(int LED = 0; LED < NUMLEDS; LED++) { 
 		led_set(LED,1);
 		_delay_ms(100);
     }
-    
+    _delay_ms(5000);
 	for(int LED = 0; LED < NUMLEDS; LED++) { 
 		led_set(LED,0);
 		_delay_ms(100);

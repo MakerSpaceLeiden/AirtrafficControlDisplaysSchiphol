@@ -59,19 +59,10 @@
 #define DISP_SEL_UPPER2  C,6 /* E1 for upper 2 rows */
 #define DISP_SEL_LOWER2  C,7 /* E1 for lower 2 rows */
 
-/*
- *  Push buttons on 50227 board are in a key matrix
- *       PD2 PD3 PD4	PD5
- * PB3      UP  WIS	RVR RD 06
- * PB2 	    22  27  36R  06
- * PB1 	    36L 18L 18R  CLR
- * PB0      4   3   2    1 
- * 
- * Down is between PD4 and PD5, Up between PD2 and PB3
- */
+
 #define KEY_ROWS	(4)
 #define KEY_COLS	(4)
-#define NUMKEYS		(17) //including UP and DOWN
+#define NUMKEYS		(21)
 
 #define KEY_R  		B
 #define KEY_R_FROM 	(0)
@@ -94,13 +85,14 @@
  /* LEDs
   * The LED's under the switchcaps are driven trough the 2nd demux and a few flipflops
   */
-#define NUMLEDS 15
+#define NUMLEDS 21
 
 #define LED_R0 A,0
 #define LED_R1 A,1 
 #define LED_R2 A,2
 #define LED_R3 A,3 
 #define LED_R4 A,4
+#define LED_R5 A,5
 #define LED_SEL0 C,3 
 #define LED_SEL1 C,4 
 #define LED_SEL2 D,6 

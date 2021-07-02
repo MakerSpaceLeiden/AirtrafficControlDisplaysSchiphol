@@ -1,7 +1,7 @@
 #ifndef _H_LEDS
 #define _H_LEDS
 
-#define NUMLEDS 15
+#include "pins.h" // for NUMLEDS define
 
 void init50227_leds(void);
 

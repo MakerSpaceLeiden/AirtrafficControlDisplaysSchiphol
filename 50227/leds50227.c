@@ -9,9 +9,9 @@
 
 #include "leds50227.h"
 
-// 3 rowdata of 5 _LEDs; 15 in total.
+// 4 rowdata of 6 _LEDs, last row minus 3 for 21 in total. So a uint16_t won't reach.
 //
-static uint16_t	_LEDs = 0;
+static uint32_t	_LEDs = 0;
 
 void 
 init50227_leds(void)
@@ -24,6 +24,7 @@ init50227_leds(void)
 	OUTPUT(LED_R2);
 	OUTPUT(LED_R3);
 	OUTPUT(LED_R4);
+	OUTPUT(LED_R5);
 	OUTPUT(LED_SEL0);
 	OUTPUT(LED_SEL1);
 	OUTPUT(LED_SEL2);
@@ -33,6 +34,7 @@ init50227_leds(void)
 	LOW(LED_R2);
 	LOW(LED_R3);
 	LOW(LED_R4);
+	LOW(LED_R5);
 
 	leds_clear();
 }
@@ -52,6 +54,7 @@ static void _led_update_col(unsigned char col, unsigned char rowdata)
 	SET(LED_R2, (rowdata >> 2) & 1);
 	SET(LED_R3, (rowdata >> 3) & 1);
 	SET(LED_R4, (rowdata >> 4) & 1);
+	SET(LED_R5, (rowdata >> 5) & 1);
 
 	HIGH(LED_E3);
 	LOW(LED_E3);
@@ -65,14 +68,14 @@ void leds_clear(void)
 
 void leds_update(void)
 {
-	for (unsigned char i = 0; i < 3; i++)
-		_led_update_col(i, (_LEDs >> (i * 5)) & 0x1F);
+	for (unsigned char i = 0; i < 4; i++)
+		_led_update_col(i, (_LEDs >> (i * 6)) & 0x3F);
 }
 
 void led_update(unsigned char at)
 {
-	int c = at / 5;
-	_led_update_col(c, (_LEDs >> (c * 5)) & 0x1F);
+	int c = at / 6;
+	_led_update_col(c, (_LEDs >> (c * 6)) & 0x3F);
 }
 
 unsigned char led_get(unsigned char at) 
@@ -87,8 +90,8 @@ void led_set(unsigned char at, unsigned char onoff)
 		_LEDs |= (1 << at);
 	else
 		_LEDs &= ~(1 << at);
-
-	_led_update_col(at/5, (_LEDs >> (((unsigned char)(at/5)) * 5)) & 0x1F);
+	_led_update_col(at/6, (_LEDs >> (((unsigned char)(at/6)) * 6)) & 0x3F);
+	//couldn't this also be led_update(at); ?
 }
 
 void led_toggle(unsigned char at)
