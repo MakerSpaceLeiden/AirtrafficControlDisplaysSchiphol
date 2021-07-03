@@ -14,18 +14,10 @@
 #include "leds50227.h"
 #include "buttons50227.h"
 
-char brightness = 3;
-
 ISR (TIMER1_OVF_vect)	
 {
 }
 
-void update_brightness(){  // DLO1414 can't dim, remove.
-    for (int displ = 0; displ < DISPLAYS; displ++) {
-        select50227(displ);
-        pd44_brigthness(brightness);
-    };
-}
 
 void read_keys(){
 	// unsigned char key;
@@ -36,14 +28,6 @@ void read_keys(){
 	const char * but = butt_scan2label(at);
 	setDisplay(0, but);
 
-	if(at == 16 &&  brightness>1) {
-		brightness--;
-		update_brightness();
-	}
-	if(at ==15 && brightness<3) {
-		brightness++;
-		update_brightness();
-	}
 	led_toggle(at);
 	_delay_ms(200);	
 }
@@ -68,7 +52,7 @@ int main (void)
 	/* Clear displays first */
 	for(int displ = 0; displ < DISPLAYS; displ++) { 
         select50227(displ);
-        setDisplay(displ, "  "); // pd44_cls(); won't work, these are not PD44's
+        setDisplay(displ, "  "); // pd44_cls(); won't work, these are DLO1414 not PD44's
     }
     leds_clear();
 	for(int LED = 0; LED < NUMLEDS; LED++) { 
@@ -87,7 +71,6 @@ int main (void)
 	str[1] = displ / 10 + '0';
 	str[2] = displ % 10 + '0';
         select50227(displ);
-        pd44_brigthness(brightness);
 	setDisplay(displ, str);
     } 
     _delay_ms(2500);
@@ -95,7 +78,6 @@ int main (void)
 #if 0 
    for(int displ = 0; displ < DISPLAYS; displ++) {
         select50227(displ);
-        pd44_brigthness(brightness);
 		pd44_sendChar(3, 'A' );
 		pd44_sendChar(2, 'B' );
 		pd44_sendChar(1, 'C' );
