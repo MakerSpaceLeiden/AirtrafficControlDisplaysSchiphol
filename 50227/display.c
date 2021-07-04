@@ -94,8 +94,9 @@ int main (void)
 
     for (int i = 0; ; i++) {
         for(int displ = 0; displ < DISPLAYS; displ++) {
+			uint8_t display[6] = {0,3,1,4,2,5}; // Re-order displays so text flows better
         	read_keys();
-			select50227(displ);
+			select50227(display[displ]);
 			pd44_sendChar(3, str[ ( displ*4 + i + 0 ) % (sizeof(str)-1) ]);
 			pd44_sendChar(2, str[ ( displ*4 + i + 1 ) % (sizeof(str)-1) ]);
 			pd44_sendChar(1, str[ ( displ*4 + i + 2 ) % (sizeof(str)-1) ]);
