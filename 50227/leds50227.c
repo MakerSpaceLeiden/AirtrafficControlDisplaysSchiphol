@@ -87,9 +87,9 @@ unsigned char led_get(unsigned char at)
 void led_set(unsigned char at, unsigned char onoff)
 {
 	if (onoff)
-		_LEDs |= (1 << at);
+		_LEDs |= ((uint32_t)1 << at);
 	else
-		_LEDs &= ~(1 << at);
+		_LEDs &= ~((uint32_t)1 << at);
 	_led_update_col(at/6, (_LEDs >> (((unsigned char)(at/6)) * 6)) & 0x3F);
 	//couldn't this also be led_update(at); ?
 }
