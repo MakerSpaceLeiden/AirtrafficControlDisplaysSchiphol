@@ -94,9 +94,9 @@ check_specials:
         SET(KEY_C2,1);  /* after setting back to input! (prevent shorts) */
 
 	if (exec == 0)
-		return 19;
-	if (l3 == 0)
 		return 20;
+	if (l3 == 0)
+		return 19;
 
 	SET(KEY_R1,0);
 	OUTPUT(KEY_R1);
@@ -119,7 +119,7 @@ check_specials:
 	OUTPUT(KEY_R2);
 	SET(KEY_R3,1);
 	_delay_us(2);
-	unsigned char corr = READ(KEY_R3); // for '22'
+	unsigned char corr = READ(KEY_R3); // for 'corr'
 	INPUT(KEY_R2); 
 	SET(KEY_R3,0);
 
@@ -138,7 +138,7 @@ const char * butt_scan2label(unsigned char at) {
 		{ "04", "R3", "L2", "36C" },
 	};
 	static const char *_collabels[] = {
-		"06", "22", "CORR", "EXE", "L3", 
+		"06", "22", "CORR", "L3", "EXE", 
 	};
 
 	if (at < 16)
